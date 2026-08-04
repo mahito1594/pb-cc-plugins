@@ -34,6 +34,11 @@ Implementation is delegated to the `implementer` subagent (sonnet).
   the change in the browser at first delivery when browser tooling
   (e.g. claude-in-chrome) is available, not only after dogfooding.
   Judge gaps in correctness and requirements, not style.
+- Read the unit's new and changed comments as someone who has only the
+  repository: every reference resolves to a path that exists there, none
+  stands on a label the session invented, and no review or process narration
+  has leaked in. There is no mechanical check for this — these failures
+  leave no fingerprint a grep can find.
 - Fixes to the same problem go to the same agent via resume (SendMessage).
   A new unit gets a fresh agent. Iteration rounds driven by fresh user
   input (design exploration with the user in the loop) are new problems,

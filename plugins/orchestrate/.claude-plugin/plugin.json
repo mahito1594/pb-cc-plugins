@@ -1,7 +1,7 @@
 {
   "name": "orchestrate",
   "description": "Orchestrator mode for expensive main models: keep planning, verification, and commits in the main session and delegate implementation to the bundled implementer subagent.",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": { "name": "Mahito TANNO" },
   "license": "MIT",
   "repository": "https://github.com/mahito1594/pb-cc-plugins"
