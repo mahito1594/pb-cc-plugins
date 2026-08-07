@@ -5,7 +5,13 @@ description: "Enter or exit design discussion mode. /discuss starts a focused de
 
 # Discussion Mode
 
-State is tracked via a lock file at `<project root>/.claude/discuss-$CLAUDE_CODE_SESSION_ID.lock`, where project root is resolved as `git rev-parse --show-toplevel` falling back to `pwd`. Do NOT place the lock under `$TMPDIR`: sandboxed Bash commands and hook commands resolve `$TMPDIR` to different directories by design, so a TMPDIR-based lock is invisible to the hook. The `PreToolUse` hook bundled with this plugin reads the lock (checking both `$CLAUDE_PROJECT_DIR` and the git-toplevel of its own cwd) and blocks `Edit`/`Write` calls while the file exists. The hook matches only those two tools: file writes through other routes (Bash redirection, `sed -i`, heredocs, NotebookEdit) are not blocked mechanically — avoid them yourself while the lock exists. Code snippets in the conversation are fine for illustration — only file writes are off-limits.
+Discussion mode is tracked by a lock file; while it exists, file edits are blocked:
+
+- The lock file is `<project root>/.claude/discuss-$CLAUDE_CODE_SESSION_ID.lock`, where project root is resolved as `git rev-parse --show-toplevel`, falling back to `pwd` outside a git repository.
+- Do NOT place the lock under `$TMPDIR`: sandboxed Bash commands and hook commands resolve `$TMPDIR` to different directories by design, so a TMPDIR-based lock is invisible to the hook.
+- A `PreToolUse` hook reads the lock (checking both `$CLAUDE_PROJECT_DIR` and the git-toplevel of its own cwd) and blocks `Edit`/`Write` calls while the file exists.
+- The hook matches only those two tools: file writes through other routes (Bash redirection, `sed -i`, heredocs, NotebookEdit) are not blocked mechanically — avoid them yourself while the lock exists.
+- Code snippets in the conversation are fine for illustration — only file writes are off-limits.
 
 ## Lock file discipline
 
