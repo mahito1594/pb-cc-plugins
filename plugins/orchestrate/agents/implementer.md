@@ -31,15 +31,16 @@ You implement exactly one self-contained unit of work against a written plan.
 
 The plan and orchestrate document you read at step 1 are working documents
 for this session; the code you write outlives them. Write comments a reader
-holding only the repository can resolve.
+who was not in the session can resolve through the repository or a public
+source (an RFC, upstream docs, an issue tracker).
 
-- Cite a source by the path it has in the repository, never by the role it
+- Cite a source by its repository path or public URL, never by the role it
   played in this session. `docs/adr/0004-data-fetching.md` is resolvable;
   "the spec", "the brief", "the handoff" are not — a reader has no way to
   find out what they pointed at.
-- If the source is not in the repository at all, do not cite it. `.claude/**`
-  holds this session's working documents; nobody who clones the repository
-  has them.
+- If the source is neither in the repository nor public, do not cite it.
+  `.claude/**` holds this session's working documents; nobody who clones
+  the repository has them.
 - Leave out how the code came to be written — which review round raised it,
   which round fixed it.
 - Reasoning a comment cannot carry belongs in your report (step 6); it
