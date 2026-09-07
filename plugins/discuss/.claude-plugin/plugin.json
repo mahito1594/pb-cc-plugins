@@ -1,7 +1,7 @@
 {
   "name": "discuss",
   "description": "Design discussion mode: /discuss blocks file edits via a lock file and a bundled PreToolUse hook; /discuss end summarizes outcomes and stops at the junction for the user to choose the next step.",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "author": { "name": "Mahito TANNO" },
   "license": "MIT",
   "repository": "https://github.com/mahito1594/pb-cc-plugins"

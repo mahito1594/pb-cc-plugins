@@ -34,21 +34,27 @@ test -f "$ROOT/.claude/discuss-$CLAUDE_CODE_SESSION_ID.lock"
 ```
 
 2. Announce that discussion mode is now active and file edits are blocked. If the lock could not be created, announce instead that the hook protection is NOT active and edits are held off by convention only.
-3. If a `[topic]` argument was provided, acknowledge it and open the discussion focused on that topic. If no argument, wait for the user to lead.
+3. If no `[topic]` argument was provided, wait for the user to lead. If one was provided, open in this order:
+   1. **Frame** — state in one or two lines what the topic presupposes: a factual claim, an assumed problem, a list presented as complete (a backlog, a stories file, a candidate list), or a decision already recorded as settled. Test a cheaply testable claim against the project (a file, a grep) before relying on it, and check whether the project itself already answers the question (its docs, CONTRIBUTING, config, handoff) before answering from general knowledge. If the presupposition is wrong, say so and reopen the question above it. If the frame holds, say so in one line — do not manufacture doubt.
+   2. **Position** — inside the frame that survived, give your recommendation and its reason. "Change nothing" counts as a recommendation when it is the best answer.
+   3. **Question** — at most one, aimed at whatever would most change what is being decided, including whether it should be decided at all.
 
 ## During discussion
 
 - Inline research pollutes the main context: each lookup accelerates compaction and degrades the end-of-discussion summary. Delegate research to subagents (`model: sonnet`, or `haiku` for mechanical extraction) and keep the main thread on synthesis and trade-off judgment. Research includes: doc queries via docs MCP tools (e.g. context7) or WebFetch, probing external APIs with curl, and exploring dependency internals (node_modules, vendored code).
 - Quick inline checks of the project's own files (reading 1–2 files, listing a directory) are exempt from the rule above. But when quick checks start chaining — a second consecutive lookup serving the same question — treat the chain as a research theme: stop and delegate the theme, not the individual lookup.
 - Example: instead of running `curl https://api.example.com/...` three times to learn a response shape, spawn one subagent: "Investigate this API's response structure and report only the essentials."
-- Track outcomes as they emerge: decisions made, alternatives rejected (with reasons), open questions. Whenever the record changes, restate it in the conversation in compact form — one line per item (`Decided: X — reason / Rejected: Y — reason / Open: Z`). Skip the restatement on turns where nothing changed.
+- Track outcomes as they emerge: decisions made, alternatives rejected (with reasons), open questions. Whenever the record changes, restate it in the conversation in compact form — one line per item (`Decided: X — reason / Rejected: Y — reason / Reframed: Z — was asked as A, actually about B / Open: W`). Skip the restatement on turns where nothing changed.
 
 ## Discussion conduct
 
-- Every option survey ends with your recommendation and its reason. If you have no position, say what evidence would give you one.
+Altitude first, then convergence. A discussion that optimizes inside a frame nobody checked converges fast on the wrong thing.
+
+- The frame check from the opening applies to every topic shift and every new premise the user brings: name what it presupposes, test what is cheap to test, then work inside it. Do not repeat the check on turns that bring no new premise.
+- Every option survey ends with your recommendation and its reason. "Change nothing" is a legitimate recommendation; do not produce a draft to satisfy this rule, and do not open a survey on a question the current decision does not depend on. If you have no position, say what evidence would give you one.
 - Name the trade-off before recommending: what is gained, what is given up.
 - On pushback, judge the argument, not the person's confidence: either defend your position with reasons or concede and state exactly what changed your mind. Never concede merely to agree.
-- At most one question per turn, aimed at whatever would most change the decision.
+- At most one question per turn, aimed at whatever would most change what is being decided — including whether it should be decided at all.
 
 ## `/discuss end` — Exit discussion mode
 
