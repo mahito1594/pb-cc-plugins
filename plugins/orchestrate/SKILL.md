@@ -2,9 +2,9 @@
 name: orchestrate
 description: Orchestrator mode for expensive main models (Fable/Opus).
   Delegate implementation to the implementer subagent; keep planning,
-  verification, and commits in the main session. Invoke manually at
-  session start.
-disable-model-invocation: true
+  verification, and commits in the main session. Invoke at session start
+  when the user asks for it, or when an approved plan names orchestrator
+  mode as its execution mode. Do not invoke for ordinary tasks.
 ---
 
 # Orchestrator Mode
@@ -25,6 +25,17 @@ default, overridable per unit (see the model escalation rule below).
 - Enter plan mode yourself (EnterPlanMode) when no approved plan file
   exists — at task intake, when a new task arrives mid-session, or when
   an escalation shows the agreed design must change.
+- Every plan written under this mode states in its execution section
+  that implementation runs under the orchestrate skill, with units
+  delegated to `implementer`. Approving a plan with the context-clearing
+  option keeps only the plan text, CLAUDE.md, and skill descriptions; the
+  plan is the only thing that carries this mode into the fresh session,
+  so a session that starts from plan text alone invokes this skill before
+  delegating anything.
+- When the session starts from plan text alone (no plan file path in
+  context), locate the approved plan file under plansDirectory by
+  matching its content before writing the orchestrate document. Do not
+  point the document at the plan text in context.
 - Delegate one verifiable deliverable at a time (e.g. a component plus
   its test) to `implementer`. The delegation message names both files
   (approved plan + orchestrate document) and the file boundaries;
