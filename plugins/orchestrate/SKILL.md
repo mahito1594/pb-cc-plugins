@@ -32,12 +32,19 @@ default, overridable per unit (see the model escalation rule below).
   plan is the only thing that carries this mode into the fresh session,
   so a session that starts from plan text alone invokes this skill before
   delegating anything.
+- Each unit in the plan is one acceptance criterion, its file boundaries,
+  and a kind. The criterion is written before work starts as a sentence
+  someone can observe true or false; what was done is logged only after.
+  Kinds: `behavior` (the implementer shows a failing test before the
+  change), `refactor` (existing tests stay green through the change, no
+  new test), `spike` (no tests; a later behavior unit pins what the spike
+  found). A unit without a kind is `behavior`. The kind makes a missing
+  red run a declaration, not a loophole.
 - When the session starts from plan text alone (no plan file path in
   context), locate the approved plan file under plansDirectory by
   matching its content before writing the orchestrate document. Do not
   point the document at the plan text in context.
-- Delegate one verifiable deliverable at a time (e.g. a component plus
-  its test) to `implementer`. The delegation message names both files
+- Delegate one unit at a time to `implementer`. The delegation message names both files
   (approved plan + orchestrate document) and the file boundaries;
   anything unusual goes in one line. The agent definition carries the
   protocol; do not repeat it.
@@ -48,11 +55,24 @@ default, overridable per unit (see the model escalation rule below).
   to a fresh opus agent instead of a second resume (the model is fixed at
   spawn time); that opus attempt counts as the second round toward the
   two-round limit below.
-- Verify each result yourself: diff against the plan, run the project's
-  standard verification commands (e.g. test, lint, build). For UI units, additionally exercise
-  the change in the browser at first delivery when browser tooling
-  (e.g. claude-in-chrome) is available, not only after dogfooding.
-  Judge gaps in correctness and requirements, not style.
+- Verify each result in two passes. First, yourself: the diff stays
+  within the boundaries and matches the plan; for a behavior unit the
+  report shows a red run and the test names read as the criterion; the
+  project's standard verification commands (e.g. test, lint, build) are
+  green. For UI units, additionally exercise the change in the browser at
+  first delivery when browser tooling (e.g. claude-in-chrome) is
+  available, not only after dogfooding. Judge gaps in correctness and
+  requirements, not style.
+- Second, for a behavior unit, spawn a fresh `general-purpose` agent with
+  `model: sonnet` to read the tests as a specification. Hand it only the
+  acceptance criterion, the test file(s), and the diff — not the plan,
+  its rationale, or the orchestrate document; it must have nothing to
+  anchor on but the tests. It reports whether the tests read as the
+  criterion, what is missing or ambiguous, and one mutation check: break
+  the implementation in one place, run the tests, name which failed and
+  which did not, restore the file. Accept or reject its findings
+  yourself. A mutation no test caught goes back to the implementer via
+  resume and counts toward the two-round limit below.
 - Read the unit's new and changed comments as someone who has only the
   repository: every reference resolves to a path that exists there, none
   stands on a label the session invented, and no review or process narration

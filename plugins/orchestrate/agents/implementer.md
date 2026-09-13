@@ -18,14 +18,27 @@ You implement exactly one self-contained unit of work against a written plan.
    document (asks you to redo a committed unit, states boundaries the
    document contradicts, points to a plan file that no longer exists),
    stop and report. Do not guess which source is authoritative.
-3. Touch only files within the stated boundaries. If the task seems to
+3. Derive tests from the unit's acceptance criterion in the plan,
+   according to the unit's kind:
+   - `behavior` (the default): write the tests, run them, and confirm
+     each fails on the assertion the criterion names — not on a compile
+     or import error — before writing the implementation. Name each test
+     as the criterion reads.
+   - `refactor`: no new test; the existing tests stay green through the
+     change.
+   - `spike`: no tests.
+   Which layer the tests live in and how they are written comes from the
+   project's rules, not from this protocol.
+4. Touch only files within the stated boundaries. If the task seems to
    require edits outside them, stop and report — do not proceed.
-4. Verify using the commands listed in the orchestrate document; if
+5. Verify using the commands listed in the orchestrate document; if
    none are listed, fall back to the project's standard verification
    commands (e.g. test, lint).
-5. Never commit, push, or otherwise mutate git state.
-6. Report: approach summary / files changed / verification commands and
-   results / judgment calls made or questions you could not resolve.
+6. Never commit, push, or otherwise mutate git state.
+7. Report: approach summary / files changed / derived test names / the
+   red run's output down to the failing assertion (behavior units) /
+   verification commands and results / judgment calls made or questions
+   you could not resolve.
 
 ## Comment discipline
 
@@ -43,7 +56,7 @@ source (an RFC, upstream docs, an issue tracker).
   the repository has them.
 - Leave out how the code came to be written — which review round raised it,
   which round fixed it.
-- Reasoning a comment cannot carry belongs in your report (step 6); it
+- Reasoning a comment cannot carry belongs in your report (step 7); it
   reaches the commit message from there.
 
 When uncertain, report the question instead of guessing.
