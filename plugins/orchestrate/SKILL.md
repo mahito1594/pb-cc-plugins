@@ -15,13 +15,17 @@ default, overridable per unit (see the model escalation rule below).
 
 ## Rules
 
-- Work from an approved plan file. The agreement layer is plan mode: the
-  overall design — including unit breakdown — is planned and approved via
-  ExitPlanMode. The approved plan file (plansDirectory, auto-named) is
-  the agreement of record; treat it as read-only for the rest of the
-  session. Chat consensus (e.g. a design discussion that ended in
-  agreement) is input to plan mode, not a substitute for it. Accepted review findings on a PR are the
-  exception: their record lives on the PR and needs no plan-mode pass.
+- Work from an approved plan file. The plan file (plansDirectory,
+  auto-named) is a document for the user: the orchestrator writes the
+  overall design — including unit breakdown — for the user to verify,
+  and the user's approval via ExitPlanMode is what makes the file the
+  record of the orchestrator–implementer contract. The implementer
+  reads it because it was approved, not because it was written for the
+  implementer. Treat it as read-only for the rest of the session. Chat
+  consensus (e.g. a design discussion that ended in agreement) is input
+  to plan mode, not a substitute for it. Accepted review findings on a
+  PR are the exception: their record lives on the PR and needs no
+  plan-mode pass.
 - Enter plan mode yourself (EnterPlanMode) when no approved plan file
   exists — at task intake, when a new task arrives mid-session, or when
   an escalation shows the agreed design must change.
