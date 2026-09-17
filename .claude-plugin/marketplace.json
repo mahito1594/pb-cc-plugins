@@ -1,6 +1,6 @@
 {
   "name": "pb-cc-plugins",
-  "description": "Personal Claude Code workflow plugins: discuss (design discussion mode) and orchestrate (orchestrator mode for expensive main models).",
+  "description": "Personal Claude Code workflow plugins: discuss (design discussion mode), orchestrate (orchestrator mode for expensive main models), and session-residue (fresh-reader check of deliverables).",
   "owner": { "name": "Mahito TANNO" },
   "plugins": [
     {
@@ -12,6 +12,11 @@
       "name": "orchestrate",
       "source": "./plugins/orchestrate",
       "description": "Orchestrator mode for expensive main models: keep planning, verification, and commits in the main session and delegate implementation to the bundled implementer subagent."
+    },
+    {
+      "name": "session-residue",
+      "source": "./plugins/session-residue",
+      "description": "Keep session residue out of deliverables: a skill with the writing rules, and a residue-check subagent that reads finished files as a reader who was not in the session."
     }
   ]
 }

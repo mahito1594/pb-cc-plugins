@@ -1,0 +1,8 @@
+{
+  "name": "session-residue",
+  "description": "Keep session residue out of deliverables: a skill with the writing rules, and a residue-check subagent that reads finished files as a reader who was not in the session.",
+  "version": "0.1.0",
+  "author": { "name": "Mahito TANNO" },
+  "license": "MIT",
+  "repository": "https://github.com/mahito1594/pb-cc-plugins"
+}
