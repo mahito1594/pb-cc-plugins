@@ -48,8 +48,9 @@ default, overridable per unit (see the model escalation rule below).
   context), locate the approved plan file under plansDirectory by
   matching its content before writing the orchestrate document. Do not
   point the document at the plan text in context.
-- Delegate one unit at a time to `implementer`. The delegation message names both files
-  (approved plan + orchestrate document) and the file boundaries;
+- Delegate one unit at a time to `implementer`. The delegation message
+  names the unit, both files (approved plan + orchestrate document), and
+  the file boundaries;
   anything unusual goes in one line. The agent definition carries the
   protocol; do not repeat it.
 - Judge each unit's difficulty at planning time: delegate units you judge
@@ -67,16 +68,23 @@ default, overridable per unit (see the model escalation rule below).
   first delivery when browser tooling (e.g. claude-in-chrome) is
   available, not only after dogfooding. Judge gaps in correctness and
   requirements, not style.
-- Second, for a behavior unit, spawn a fresh `general-purpose` agent with
-  `model: sonnet` to read the tests as a specification. Hand it only the
-  acceptance criterion, the test file(s), and the diff — not the plan,
-  its rationale, or the orchestrate document; it must have nothing to
-  anchor on but the tests. It reports whether the tests read as the
-  criterion, what is missing or ambiguous, and one mutation check: break
-  the implementation in one place, run the tests, name which failed and
-  which did not, restore the file. Accept or reject its findings
-  yourself. A mutation no test caught goes back to the implementer via
-  resume and counts toward the two-round limit below.
+- Second, for a behavior unit, spawn `spec-reader` to read the tests as
+  a specification. The agent definition carries the protocol (coverage
+  reading, one mutation check, restore); the delegation message carries
+  only its inputs: the acceptance criterion, the test file(s) and test
+  names, the unit's diff saved to a file outside the repository
+  (`git diff HEAD` skips untracked files — `git add -N` them first), the
+  implementation file(s) the diff touches, the test command, and the
+  restore check — a command that prints nothing when the implementation
+  files are back to their current state, e.g. `shasum -c --quiet` against
+  a checksum file written now, since `git diff` is blind to untracked
+  files — not the plan, its rationale, or the orchestrate document. Name
+  no place to break and ask about no particular assertion: the reader
+  chooses its own mutation, and a hint anchors it on what you already
+  suspect. Accept or reject its findings yourself. An accepted finding — a
+  clause no test pins, or a mutation no test caught — goes back to the
+  implementer via resume, counts toward the two-round limit below, and
+  the fixed unit gets a fresh reader.
 - Read the unit's new and changed comments as someone who has only the
   repository: every reference resolves to a path that exists there, none
   stands on a label the session invented, and no review or process narration
