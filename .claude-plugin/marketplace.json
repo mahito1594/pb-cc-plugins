@@ -6,7 +6,7 @@
     {
       "name": "discuss",
       "source": "./plugins/discuss",
-      "description": "Design discussion mode: /discuss blocks file edits via a lock file and a bundled PreToolUse hook; /discuss end summarizes outcomes and stops at the junction for the user to choose the next step."
+      "description": "Design discussion mode: /discuss checks the question's frame, keeps a running record of decisions, and holds off file writes (Edit/Write blocked by a bundled PreToolUse hook); /discuss end summarizes outcomes and stops at the junction for the user to choose the next step."
     },
     {
       "name": "orchestrate",

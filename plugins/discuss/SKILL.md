@@ -1,11 +1,11 @@
 ---
 name: discuss
-description: "Enter or exit design discussion mode. /discuss starts a focused design conversation that blocks file edits via a lock file (<project root>/.claude/discuss-$CLAUDE_CODE_SESSION_ID.lock). /discuss end removes the lock, summarizes the outcomes, and stops at the junction so the user chooses the next step (plan mode, model switch, orchestrate, handoff, record-only, or park). Trigger on: /discuss, 'start discussion', 'design discussion', /discuss end, 'end discussion', 'exit discussion mode'."
+description: "Enter or exit design discussion mode: check the question's frame before converging, keep a running record of decisions, rejected alternatives, and open questions, and on /discuss end stop at the junction so the user chooses the next step (plan mode, model switch, orchestrate, handoff, record-only, or park). No files are written until /discuss end; a lock file and a bundled PreToolUse hook enforce this for Edit/Write. Trigger on: /discuss, 'start discussion', 'design discussion', /discuss end, 'end discussion', 'exit discussion mode'."
 ---
 
 # Discussion Mode
 
-Discussion mode is tracked by a lock file; while it exists, file edits are blocked:
+Discussion mode keeps the conversation on design: check the frame, converge, record outcomes, and hand the next step to the user. No files are written until `/discuss end`, by any route. A lock file backs this up mechanically for `Edit`/`Write` only:
 
 - The lock file is `<project root>/.claude/discuss-$CLAUDE_CODE_SESSION_ID.lock`, where project root is resolved as `git rev-parse --show-toplevel`, falling back to `pwd` outside a git repository.
 - Do NOT place the lock under `$TMPDIR`: sandboxed Bash commands and hook commands resolve `$TMPDIR` to different directories by design, so a TMPDIR-based lock is invisible to the hook.

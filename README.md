@@ -18,7 +18,7 @@ A Claude Code plugin marketplace distributing three workflow plugins: `discuss`,
 
 ## Plugins
 
-- **discuss**: Design discussion mode that blocks file edits via a lock file and a bundled `PreToolUse` hook until you end the discussion.
+- **discuss**: Design discussion mode that checks the question's frame before converging, keeps a running record of decisions, and holds off file writes until you end the discussion (Edit/Write are blocked by a bundled `PreToolUse` hook).
 - **orchestrate**: Orchestrator mode that keeps planning, verification, and commits in the main session and delegates implementation to a bundled subagent.
 - **session-residue**: Keeps session residue — sentences that only someone who was in the writing session can resolve ("the spec", "as requested", "findings 3 and 8") — out of deliverables. See [session-residue](#session-residue).
 
